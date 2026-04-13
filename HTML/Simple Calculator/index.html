@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Modern Dark Calculator</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="app">
+    <div class="calculator" role="application" aria-label="Calculator">
+      <header class="calc-header">
+        <h1 class="title">Calculator</h1>
+        <div class="theme-toggle" title="Toggle theme">
+          <input id="theme-switch" type="checkbox" aria-label="Toggle light theme">
+          <label for="theme-switch">☀️</label>
+        </div>
+      </header>
+
+      <section class="display" id="display" aria-live="polite">
+        <div id="expression" class="expr" aria-hidden="false">0</div>
+      </section>
+
+      <section class="keypad" role="group" aria-label="Calculator buttons">
+        <button class="btn function" data-action="clear" aria-label="Clear">AC</button>
+        <button class="btn function" data-action="delete" aria-label="Delete">DEL</button>
+        <button class="btn function" data-action="percent" aria-label="Percent">%</button>
+        <button class="btn operator" data-value="/" aria-label="Divide">÷</button>
+
+        <button class="btn" data-value="7">7</button>
+        <button class="btn" data-value="8">8</button>
+        <button class="btn" data-value="9">9</button>
+        <button class="btn operator" data-value="*" aria-label="Multiply">×</button>
+
+        <button class="btn" data-value="4">4</button>
+        <button class="btn" data-value="5">5</button>
+        <button class="btn" data-value="6">6</button>
+        <button class="btn operator" data-value="-" aria-label="Minus">−</button>
+
+        <button class="btn" data-value="1">1</button>
+        <button class="btn" data-value="2">2</button>
+        <button class="btn" data-value="3">3</button>
+        <button class="btn operator" data-value="+" aria-label="Plus">+</button>
+
+        <button class="btn" data-value="0">0</button>
+        <button class="btn" data-value="." aria-label="Decimal">.</button>
+        <button class="btn" data-action="paren" data-value="(" aria-hidden="true">(</button>
+        <button class="btn equals" data-action="equals" aria-label="Equals">=</button>
+      </section>
+    </div>
+
+    <p class="credit">Tip: Use keyboard — numbers, + - * /, Enter =, Backspace = delete, Esc = clear.</p>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

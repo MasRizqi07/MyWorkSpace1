@@ -1,0 +1,25 @@
+{
+  "name": "myworkspace",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MasRizqi07/MyWorkSpace.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/MasRizqi07/MyWorkSpace/issues"
+  },
+  "homepage": "https://github.com/MasRizqi07/MyWorkSpace#readme",
+  "devDependencies": {
+    "@types/node": "^25.5.0",
+    "readline-sync": "^1.4.10"
+  }
+}

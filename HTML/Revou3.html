@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real-time Input Display</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 500px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #667eea;
+            margin-bottom: 30px;
+            font-size: 28px;
+        }
+
+        #input {
+            width: 100%;
+            padding: 15px 20px;
+            font-size: 18px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            outline: none;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        #input:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+        }
+
+        #input::placeholder {
+            color: #999;
+        }
+
+        .output-container {
+            margin-top: 30px;
+        }
+
+        .output-label {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        #output {
+            background: #f5f5f5;
+            padding: 20px;
+            border-radius: 10px;
+            min-height: 60px;
+            font-size: 18px;
+            color: #333;
+            word-wrap: break-word;
+            border-left: 4px solid #667eea;
+            transition: all 0.3s ease;
+        }
+
+        #output:empty::before {
+            content: "Teks yang Anda ketik akan muncul di sini...";
+            color: #999;
+            font-style: italic;
+        }
+
+        .char-count {
+            text-align: right;
+            margin-top: 10px;
+            color: #666;
+            font-size: 14px;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.02);
+            }
+        }
+
+        .typing {
+            animation: pulse 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>✨ Real-time Input Display</h1>
+        
+        <input 
+            id="input" 
+            type="text"
+            placeholder="Ketik sesuatu..." 
+            autocomplete="off"
+        />
+        
+        <div class="output-container">
+            <div class="output-label">Output:</div>
+            <div id="output"></div>
+            <div class="char-count" id="charCount">0 karakter</div>
+        </div>
+    </div>
+
+    <script>
+        const inputElement = document.getElementById("input");
+        const outputElement = document.getElementById("output");
+        const charCountElement = document.getElementById("charCount");
+
+        inputElement.addEventListener("input", function(event) {
+            const value = event.target.value;
+            
+            // Log ke console
+            console.log("You Typed: " + value);
+            
+            // Update output
+            outputElement.innerText = value;
+            
+            // Update character count
+            charCountElement.innerText = value.length + " karakter";
+            
+            // Tambahkan efek animasi
+            outputElement.classList.add("typing");
+            setTimeout(() => {
+                outputElement.classList.remove("typing");
+            }, 300);
+        });
+
+        // Optional: Clear button functionality
+        inputElement.addEventListener("keydown", function(event) {
+            // Clear dengan Escape key
+            if (event.key === "Escape") {
+                inputElement.value = "";
+                outputElement.innerText = "";
+                charCountElement.innerText = "0 karakter";
+            }
+        });
+    </script>
+</body>
+</html>

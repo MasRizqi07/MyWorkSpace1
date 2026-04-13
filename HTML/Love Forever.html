@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Love Forever</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: #000;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Courier New', monospace;
+    }
+
+    canvas { display: block; }
+
+    #title {
+      position: fixed;
+      bottom: 28px;
+      width: 100%;
+      text-align: center;
+      color: rgba(220, 40, 40, 0.5);
+      font-family: 'Courier New', monospace;
+      font-size: 11px;
+      letter-spacing: 0.5em;
+      text-transform: uppercase;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<div id="title">✦ Love Forever ✦</div>
+
+<script>
+const canvas = document.getElementById('c');
+const ctx    = canvas.getContext('2d');
+
+let W = canvas.width  = window.innerWidth;
+let H = canvas.height = window.innerHeight;
+window.addEventListener('resize', () => {
+  W = canvas.width  = window.innerWidth;
+  H = canvas.height = window.innerHeight;
+});
+
+// ── Heart formula ─────────────────────────────────────────────
+function heartX(t) { return 16 * Math.pow(Math.sin(t), 3); }
+function heartY(t) {
+  return -(13*Math.cos(t) - 5*Math.cos(2*t) - 2*Math.cos(3*t) - Math.cos(4*t));
+}
+
+// ── Generate points along heart ───────────────────────────────
+const WORDS   = ['i love you ', 'love you ', 'i love you '];
+const WORD    = 'i love you ';
+const NPOINTS = 600;
+const SCALE   = 15;
+
+const heartPoints = [];
+for (let i = 0; i < NPOINTS; i++) {
+  const t = (i / NPOINTS) * Math.PI * 2;
+  heartPoints.push({
+    x: heartX(t) * SCALE,
+    y: heartY(t) * SCALE,
+    charIdx: i % WORD.length,
+    char: WORD[i % WORD.length]
+  });
+}
+
+// ── 3D layers ─────────────────────────────────────────────────
+// Simulate depth by creating multiple "rings" at different Z depths
+const LAYERS = 6;
+const allPoints = [];
+
+for (let l = 0; l < LAYERS; l++) {
+  const zOffset  = (l / (LAYERS - 1) - 0.5) * 1.6; // -0.8 … 0.8
+  const scaleOff = 1 - Math.abs(zOffset) * 0.18;
+  const countForLayer = Math.floor(NPOINTS * (1 - Math.abs(zOffset) * 0.3));
+
+  for (let i = 0; i < countForLayer; i++) {
+    const t = (i / countForLayer) * Math.PI * 2;
+    allPoints.push({
+      ox: heartX(t) * SCALE * scaleOff,
+      oy: heartY(t) * SCALE * scaleOff,
+      oz: zOffset,
+      char: WORD[i % WORD.length],
+      phase: Math.random() * Math.PI * 2,
+      layer: l
+    });
+  }
+}
+
+// ── Animate ───────────────────────────────────────────────────
+let angle = 0;
+const FONT_SIZE = 9;
+
+function getColor(z, alpha) {
+  // depth tinting: front = bright red, back = dark crimson
+  const brightness = Math.round(180 + z * 60);   // 120 … 240
+  const gb         = Math.round(20  + z * 20);
+  return `rgba(${brightness},${gb},${gb},${alpha})`;
+}
+
+function draw() {
+  ctx.fillStyle = 'rgba(0,0,0,0.25)';
+  ctx.fillRect(0, 0, W, H);
+
+  const cx = W / 2;
+  const cy = H / 2 + 10;
+
+  angle += 0.012;
+
+  // project & sort by Z (painter's algorithm)
+  const projected = allPoints.map(p => {
+    // rotate around Y axis
+    const cosA = Math.cos(angle);
+    const sinA = Math.sin(angle);
+    const zDepth = 80; // perspective depth multiplier
+
+    const rx = p.ox * cosA - p.oz * zDepth * sinA;
+    const rz = p.ox * sinA + p.oz * zDepth * cosA;
+
+    const perspective = 350 / (350 + rz);
+
+    const sx = rx * perspective + cx;
+    const sy = p.oy * perspective + cy;
+
+    // depth-based brightness
+    const depthNorm = (rz + 90) / 180; // 0…1
+
+    return { sx, sy, rz, depthNorm, char: p.char, phase: p.phase };
+  });
+
+  // Sort back to front
+  projected.sort((a, b) => a.rz - b.rz);
+
+  // Draw chars
+  projected.forEach(p => {
+    if (p.char === ' ') return;
+
+    const twinkle = 0.5 + 0.5 * Math.sin(Date.now() * 0.002 + p.phase);
+    const baseAlpha = 0.3 + p.depthNorm * 0.7;
+    const alpha = baseAlpha * (0.7 + twinkle * 0.3);
+
+    const fontSize = Math.max(6, FONT_SIZE * (0.6 + p.depthNorm * 0.8));
+    ctx.font = `bold ${fontSize}px 'Courier New', monospace`;
+    ctx.fillStyle = getColor(p.depthNorm, Math.min(1, alpha));
+    ctx.fillText(p.char, p.sx, p.sy);
+  });
+
+  // Glow pass for front layer chars
+  ctx.globalCompositeOperation = 'screen';
+  projected.forEach(p => {
+    if (p.char === ' ' || p.depthNorm < 0.7) return;
+    const fontSize = Math.max(6, FONT_SIZE * (0.6 + p.depthNorm * 0.8));
+    ctx.font = `bold ${fontSize}px 'Courier New', monospace`;
+    ctx.fillStyle = `rgba(255,60,60,0.12)`;
+    ctx.fillText(p.char, p.sx - 0.5, p.sy - 0.5);
+  });
+  ctx.globalCompositeOperation = 'source-over';
+
+  requestAnimationFrame(draw);
+}
+
+draw();
+</script>
+</body>
+</html>

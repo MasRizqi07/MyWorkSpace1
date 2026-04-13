@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SNEAKERCO. | Premium Footwear</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="logo">SNEAKER<span>CO.</span></div>
+        <ul class="nav-links">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#features">Teknologi</a></li>
+            <li><a href="#catalog">Katalog</a></li>
+        </ul>
+        <div class="nav-actions">
+            <button class="cart-btn" onclick="toggleCart()">
+                <i class="fa-solid fa-bag-shopping"></i>
+                <span class="cart-badge" id="cart-count">0</span>
+            </button>
+        </div>
+    </nav>
+
+    <div class="cart-overlay" id="cart-overlay" onclick="toggleCart()"></div>
+    <aside class="cart-sidebar" id="cart-sidebar">
+        <div class="cart-header">
+            <h2>Keranjang Anda</h2>
+            <button class="close-btn" onclick="toggleCart()"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="cart-items" id="cart-items">
+            <p class="empty-cart">Keranjang masih kosong.</p>
+        </div>
+        <div class="cart-footer">
+            <div class="total">
+                <span>Total:</span>
+                <span id="cart-total">Rp 0</span>
+            </div>
+            <button class="checkout-btn" onclick="checkout()">Checkout Sekarang</button>
+        </div>
+    </aside>
+
+    <div id="toast" class="toast"><i class="fa-solid fa-check-circle"></i> Berhasil ditambahkan ke keranjang!</div>
+
+    <header class="hero" id="home">
+        <div class="hero-content">
+            <div class="badge">Edisi Terbatas 2026</div>
+            <h1 id="hero-title">AERO <span class="text-gradient">PRO MAX</span></h1>
+            <p>Didesain untuk aerodinamis maksimal. Material ultra-ringan berpadu dengan bantalan responsif untuk dorongan ekstra di setiap langkah.</p>
+            
+            <div class="price-tag">Rp 2.499.000</div>
+
+            <div class="controls">
+                <p><i class="fa-solid fa-palette"></i> Pilih Varian Warna:</p>
+                <div class="color-options">
+                    <button class="color-btn active" style="background: #ff4757;" onclick="changeTheme('red', this)" aria-label="Merah"></button>
+                    <button class="color-btn" style="background: #2ed573;" onclick="changeTheme('green', this)" aria-label="Hijau"></button>
+                    <button class="color-btn" style="background: #1e90ff;" onclick="changeTheme('blue', this)" aria-label="Biru"></button>
+                    <button class="color-btn" style="background: #feca57;" onclick="changeTheme('yellow', this)" aria-label="Kuning"></button>
+                </div>
+            </div>
+
+            <div class="hero-buttons">
+                <button class="btn-primary" onclick="addToCart('Aero Pro Max', 2499000, 'hero-img')">
+                    <i class="fa-solid fa-cart-plus"></i> Tambah ke Keranjang
+                </button>
+                <a href="#catalog" class="btn-secondary">Lihat Koleksi</a>
+            </div>
+        </div>
+
+        <div class="hero-image">
+            <div class="glow-orb"></div>
+            <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Aero Pro Max" id="hero-img">
+        </div>
+    </header>
+
+    <section class="features" id="features">
+        <div class="section-title">
+            <h2>Teknologi <span>Mutakhir</span></h2>
+            <p>Inovasi di setiap jahitan.</p>
+        </div>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="icon-wrapper"><i class="fa-solid fa-feather-pointed"></i></div>
+                <h3>CloudFoam V2</h3>
+                <p>Material sol terbaru yang 30% lebih ringan dan menyerap benturan lebih optimal.</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon-wrapper"><i class="fa-solid fa-droplet-slash"></i></div>
+                <h3>HydroShield</h3>
+                <p>Lapisan nano-coating membuat sepatu tahan air tanpa mengurangi sirkulasi udara.</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon-wrapper"><i class="fa-solid fa-leaf"></i></div>
+                <h3>Eco-Friendly</h3>
+                <p>Terbuat dari 40% material daur ulang plastik laut yang diproses secara etis.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="catalog" id="catalog">
+        <div class="section-title">
+            <h2>Koleksi <span>Terbaru</span></h2>
+        </div>
+        <div class="catalog-grid">
+            <div class="product-card">
+                <div class="product-img">
+                    <img src="https://images.unsplash.com/photo-1608231387042-66d1773070a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Urban Runner">
+                </div>
+                <div class="product-info">
+                    <h3>Urban Runner X</h3>
+                    <p class="price">Rp 1.899.000</p>
+                    <button class="btn-add-cart" onclick="addToCart('Urban Runner X', 1899000, 'https://images.unsplash.com/photo-1608231387042-66d1773070a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80')">
+                        <i class="fa-solid fa-plus"></i> Tambah
+                    </button>
+                </div>
+            </div>
+            <div class="product-card">
+                <div class="product-img">
+                    <img src="https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Street Classic">
+                </div>
+                <div class="product-info">
+                    <h3>Street Classic</h3>
+                    <p class="price">Rp 1.450.000</p>
+                    <button class="btn-add-cart" onclick="addToCart('Street Classic', 1450000, 'https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80')">
+                        <i class="fa-solid fa-plus"></i> Tambah
+                    </button>
+                </div>
+            </div>
+            <div class="product-card">
+                <div class="product-img">
+                    <img src="https://images.unsplash.com/photo-1560769629-975ec94e6a86?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Velocity V1">
+                </div>
+                <div class="product-info">
+                    <h3>Velocity V1</h3>
+                    <p class="price">Rp 2.100.000</p>
+                    <button class="btn-add-cart" onclick="addToCart('Velocity V1', 2100000, 'https://images.unsplash.com/photo-1560769629-975ec94e6a86?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80')">
+                        <i class="fa-solid fa-plus"></i> Tambah
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <div class="logo">SNEAKER<span>CO.</span></div>
+            <p>Membawa langkahmu menuju masa depan.</p>
+            <div class="social-links">
+                <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                <a href="#"><i class="fa-brands fa-twitter"></i></a>
+                <a href="#"><i class="fa-brands fa-youtube"></i></a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 SneakerCo. Developed by Informatics Engineer.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

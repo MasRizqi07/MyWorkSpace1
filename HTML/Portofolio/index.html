@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pacoel.Dev | High-Value Software Engineer</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+</head>
+<body>
+
+    <nav class="navbar glass-nav">
+        <div class="logo">Pacoel<span>.Dev</span></div>
+        <button id="mobile-menu-btn" class="mobile-toggle" aria-label="Menu">
+            <i class="ph ph-list"></i>
+        </button>
+        <ul class="nav-links" id="nav-links">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#philosophy">Workflow</a></li>
+            <li><a href="#projects">Proyek</a></li>
+        </ul>
+        <button id="theme-toggle" aria-label="Toggle Theme">
+            <i class="ph ph-sun"></i>
+        </button>
+    </nav>
+
+    <section id="home" class="hero">
+        <div class="hero-shapes">
+            <div class="shape shape-1"></div>
+            <div class="shape shape-2"></div>
+        </div>
+        <div class="hero-content fade-in">
+            <div class="badge">Informatics Engineering</div>
+            <h1>Architecting <span class="highlight">Digital Elegance</span></h1>
+            <p>Membangun sistem yang tidak hanya berfungsi, tapi memiliki arsitektur yang solid, performa tinggi, dan estetika premium.</p>
+            <div class="hero-buttons">
+                <a href="#projects" class="btn btn-primary">Lihat Case Studies <i class="ph ph-arrow-down-right"></i></a>
+            </div>
+        </div>
+    </section>
+
+    <section id="philosophy" class="section">
+        <h2 class="section-title fade-in">Engineering Practices</h2>
+        <div class="philosophy-grid fade-in">
+            <div class="phil-card glass">
+                <i class="ph ph-warning-circle phil-icon"></i>
+                <h3>Zero Warning Tolerance</h3>
+                <p>Kode yang bersih adalah investasi. Mengintegrasikan SonarQube di VS Code untuk membasmi indikator peringatan kuning pada JavaScript, memastikan kualitas kode level produksi.</p>
+            </div>
+            <div class="phil-card glass">
+                <i class="ph ph-terminal-window phil-icon"></i>
+                <h3>Strict Typed Logic</h3>
+                <p>Fondasi logika dibangun dengan C++. Menggunakan ekstensi clangd untuk presisi tinggi, membedah algoritma, dan mencegah error merah sebelum proses kompilasi.</p>
+            </div>
+            <div class="phil-card glass">
+                <i class="ph ph-diamond phil-icon"></i>
+                <h3>Premium UI/UX</h3>
+                <p>Estetika bukan sekadar tempelan. Menggabungkan performa logika backend dengan desain frontend minimalis untuk pengalaman pengguna kelas atas.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="projects" class="section">
+        <h2 class="section-title fade-in">Proyek Unggulan</h2>
+        <div class="project-grid">
+            <div class="project-card glass fade-in" data-project="ecommerce">
+                <div class="card-img" style="background-image: url('https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&q=80&w=800');"></div>
+                <div class="card-content">
+                    <h3>High-End E-Commerce</h3>
+                    <p>Sistem transaksi digital dengan arsitektur keranjang dinamis.</p>
+                    <button class="btn-text open-modal">Detail Arsitektur <i class="ph ph-arrow-right"></i></button>
+                </div>
+            </div>
+            <div class="project-card glass fade-in" data-project="finance">
+                <div class="card-img" style="background-image: url('https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=800');"></div>
+                <div class="card-content">
+                    <h3>Wealth Tracker Dashboard</h3>
+                    <p>Platform analitik finansial untuk proyeksi akumulasi aset.</p>
+                    <button class="btn-text open-modal">Detail Arsitektur <i class="ph ph-arrow-right"></i></button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div id="project-modal" class="modal-overlay">
+        <div class="modal-content glass">
+            <button class="close-modal"><i class="ph ph-x"></i></button>
+            <h2 id="modal-title">Project Title</h2>
+            <div class="modal-body">
+                <div class="modal-section">
+                    <h4>Tech Stack</h4>
+                    <p id="modal-tech" class="highlight-text">HTML, CSS, JS</p>
+                </div>
+                <div class="modal-section">
+                    <h4>Problem</h4>
+                    <p id="modal-problem">Deskripsi masalah...</p>
+                </div>
+                <div class="modal-section">
+                    <h4>Solution</h4>
+                    <p id="modal-solution">Deskripsi solusi...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer id="contact">
+        <p>&copy; 2026 Pacoel.Dev. No spaghetti code, just logic.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
