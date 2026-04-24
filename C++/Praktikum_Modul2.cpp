@@ -1,39 +1,3 @@
-/*
-Buat program Single Linked List untuk mengelola data mahasiswa.
-Ketentuan Data:
-- id (auto increment)
-- nama
-- npm (8 digit & unik)
-- jurusan
-- ipk (0 - 4.0)
-Validasi Input (saat tambah data):
-- Tidak boleh ada data kosong
-- NPM harus 8 digit angka
-- NPM tidak boleh duplikat
-- IPK harus antara 0 - 4.0
-Fitur:
-1. Tambah data (ke akhir linked list)
-2. Tampilkan semua data
-3. Cari berdasarkan NPM
-4. IPK harus antara 0 - 4.0
-
-contoh output:
-====== MENU DATA MAHASISWA ======
-1. Tambah Mahasiswa
-2. Tampilkan Semua Mahasiswa
-3. Cari mahasiswa (berdasarkan NPM)
-4. Update Data Mahasiswa
-5. Hapus Mahasiswa (berdasarkan NPM)
-6. Hapus Semua Data
-7. Keluar
-Pilih: 
-
-Program menerapkan pointer
-program mengimplementasikan single linked list
-program menerapkan semua menu
-program berjalan tanpa error
-*/
-
 #include <iostream>
 #include <string>
 #include <limits>
@@ -365,3 +329,4 @@ int main() {
 
     return 0;
 }
+
