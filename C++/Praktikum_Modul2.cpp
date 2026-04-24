@@ -16,10 +16,10 @@ struct Node {
 class MahasiswaList {
 private:
     Node* head;
-    Node* tail; // Optimasi: Insert di akhir jadi O(1)
+    Node* tail;
     int idCounter;
 
-    // Helper untuk cek duplikat NPM
+    
     bool isDuplicateNPM(const string& npm) {
         Node* current = head;
         while (current != nullptr) {
@@ -49,7 +49,7 @@ public:
         cout << "Masukkan IPK (0.0 - 4.0): ";
         cin >> ipkStr;
 
-        // Validasi Input
+        
         if (nama.empty() || npm.empty() || jurusan.empty() || ipkStr.empty()) {
             cout << "Kesalahan: Data tidak boleh kosong!" << endl;
             return;
@@ -76,7 +76,7 @@ public:
             return;
         }
 
-        // Pembuatan Node Baru
+        
         Node* newNode = new Node{idCounter++, nama, npm, jurusan, ipk, nullptr};
 
         if (head == nullptr) {
@@ -97,7 +97,7 @@ public:
         cout << "\nDAFTAR MAHASISWA" << endl;
         while (curr != nullptr) {
             cout << "[" << curr->id << "] " << curr->npm << " - " << curr->nama 
-                 << " (" << curr->jurusan << ") IPK: " << curr->ipk << endl;
+                << " (" << curr->jurusan << ") IPK: " << curr->ipk << endl;
             curr = curr->next;
         }
     }
