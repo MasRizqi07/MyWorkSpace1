@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <limits>
+
 using namespace std;
 
 struct Node {
@@ -12,321 +13,186 @@ struct Node {
     Node* next;
 };
 
-class LinkedList {
-    private:
-        Node* head;
-        int idCounter;
+class MahasiswaList {
+private:
+    Node* head;
+    Node* tail; // Optimasi: Insert di akhir jadi O(1)
+    int idCounter;
 
-    public:
-        LinkedList();
-        ~LinkedList();
-        void addMahasiswa();
-        void displayAll() const;
-        void searchByNPM() const;
-        void updateByNPM();
-        void deleteByNPM();
-        void clearAll();
-        bool isDuplicateNPM(const string& npm) const;
-        static bool isValidNPM(const string& npm);
-        static bool isValidIPK(double ipk);
-        static string readLine(const string& prompt);
-};
-
-LinkedList::LinkedList() {
-    head = nullptr;
-    idCounter = 1;
-}
-
-LinkedList::~LinkedList() {
-    clearAll();
-}
-
-string LinkedList::readLine(const string& prompt) {
-    string input;
-    cout << prompt;
-    getline(cin, input);
-    return input;
-}
-
-bool LinkedList::isValidNPM(const string& npm) {
-    if (npm.length() != 8) return false;
-    for (char c : npm) {
-        if (!isdigit(static_cast<unsigned char>(c))) return false;
-    }
-    return true;
-}
-
-bool LinkedList::isValidIPK(double ipk) {
-    return ipk >= 0.0 && ipk <= 4.0;
-}
-
-bool LinkedList::isDuplicateNPM(const string& npm) const {
-    Node* current = head;
-    while (current != nullptr) {
-        if (current->npm == npm) {
-            return true;
+    // Helper untuk cek duplikat NPM
+    bool isDuplicateNPM(const string& npm) {
+        Node* current = head;
+        while (current != nullptr) {
+            if (current->npm == npm) return true;
+            current = current->next;
         }
-        current = current->next;
-    }
-    return false;
-}
-
-void LinkedList::addMahasiswa() {
-    string nama = readLine("Masukkan nama: ");
-    if (nama.empty()) {
-        cout << "Nama tidak boleh kosong." << endl;
-        return;
+        return false;
     }
 
-    string npm = readLine("Masukkan NPM (8 digit): ");
-    if (npm.empty()) {
-        cout << "NPM tidak boleh kosong." << endl;
-        return;
-    }
-    if (!isValidNPM(npm)) {
-        cout << "NPM harus 8 digit angka." << endl;
-        return;
-    }
-    if (isDuplicateNPM(npm)) {
-        cout << "NPM sudah terdaftar. Gunakan NPM lain." << endl;
-        return;
+public:
+    MahasiswaList() : head(nullptr), tail(nullptr), idCounter(1) {}
+
+    ~MahasiswaList() {
+        clearAll();
     }
 
-    string jurusan = readLine("Masukkan jurusan: ");
-    if (jurusan.empty()) {
-        cout << "Jurusan tidak boleh kosong." << endl;
-        return;
-    }
+    void addMahasiswa() {
+        string nama, npm, jurusan, ipkStr;
+        double ipk;
 
-    string ipkString = readLine("Masukkan IPK (0.0 - 4.0): ");
-    if (ipkString.empty()) {
-        cout << "IPK tidak boleh kosong." << endl;
-        return;
-    }
+        cout << "Masukkan nama: ";
+        getline(cin >> ws, nama);
+        cout << "Masukkan NPM (8 digit): ";
+        cin >> npm;
+        cout << "Masukkan jurusan: ";
+        getline(cin >> ws, jurusan);
+        cout << "Masukkan IPK (0.0 - 4.0): ";
+        cin >> ipkStr;
 
-    try {
-        double ipk = stod(ipkString);
-        if (!isValidIPK(ipk)) {
-            cout << "IPK harus antara 0.0 sampai 4.0." << endl;
+        // Validasi Input
+        if (nama.empty() || npm.empty() || jurusan.empty() || ipkStr.empty()) {
+            cout << "Kesalahan: Data tidak boleh kosong!" << endl;
             return;
         }
 
-        Node* newNode = new Node();
-        newNode->id = idCounter++;
-        newNode->nama = nama;
-        newNode->npm = npm;
-        newNode->jurusan = jurusan;
-        newNode->ipk = ipk;
-        newNode->next = nullptr;
+        if (npm.length() != 8) {
+            cout << "Kesalahan: NPM harus 8 digit!" << endl;
+            return;
+        }
+
+        if (isDuplicateNPM(npm)) {
+            cout << "Kesalahan: NPM sudah terdaftar!" << endl;
+            return;
+        }
+
+        try {
+            ipk = stod(ipkStr);
+            if (ipk < 0.0 || ipk > 4.0) {
+                cout << "Kesalahan: IPK harus antara 0.0 - 4.0!" << endl;
+                return;
+            }
+        } catch (...) {
+            cout << "Kesalahan: IPK harus berupa angka!" << endl;
+            return;
+        }
+
+        // Pembuatan Node Baru
+        Node* newNode = new Node{idCounter++, nama, npm, jurusan, ipk, nullptr};
 
         if (head == nullptr) {
-            head = newNode;
+            head = tail = newNode;
         } else {
-            Node* current = head;
-            while (current->next != nullptr) {
-                current = current->next;
-            }
-            current->next = newNode;
+            tail->next = newNode;
+            tail = newNode;
         }
-
-        cout << "Data mahasiswa berhasil ditambahkan." << endl;
-    } catch (const invalid_argument&) {
-        cout << "IPK harus berupa angka." << endl;
-    } catch (const out_of_range&) {
-        cout << "IPK tidak valid." << endl;
-    }
-}
-
-void LinkedList::displayAll() const {
-    if (head == nullptr) {
-        cout << "Belum ada data mahasiswa." << endl;
-        return;
+        cout << "Data berhasil ditambahkan ke akhir list." << endl;
     }
 
-    cout << "\nDaftar Mahasiswa:" << endl;
-    cout << "-----------------------------------------------" << endl;
-    Node* current = head;
-    while (current != nullptr) {
-        cout << "ID      : " << current->id << endl;
-        cout << "Nama    : " << current->nama << endl;
-        cout << "NPM     : " << current->npm << endl;
-        cout << "Jurusan : " << current->jurusan << endl;
-        cout << "IPK     : " << current->ipk << endl;
-        cout << "-----------------------------------------------" << endl;
-        current = current->next;
-    }
-}
-
-void LinkedList::searchByNPM() const {
-    string npm = readLine("Masukkan NPM yang dicari: ");
-    if (npm.empty()) {
-        cout << "NPM tidak boleh kosong." << endl;
-        return;
-    }
-    if (!isValidNPM(npm)) {
-        cout << "NPM harus 8 digit angka." << endl;
-        return;
-    }
-
-    Node* current = head;
-    while (current != nullptr) {
-        if (current->npm == npm) {
-            cout << "Data ditemukan:" << endl;
-            cout << "ID      : " << current->id << endl;
-            cout << "Nama    : " << current->nama << endl;
-            cout << "NPM     : " << current->npm << endl;
-            cout << "Jurusan : " << current->jurusan << endl;
-            cout << "IPK     : " << current->ipk << endl;
+    void displayAll() {
+        if (head == nullptr) {
+            cout << "Daftar mahasiswa kosong." << endl;
             return;
         }
-        current = current->next;
-    }
-    cout << "Mahasiswa dengan NPM tersebut tidak ditemukan." << endl;
-}
-
-void LinkedList::updateByNPM() {
-    string npm = readLine("Masukkan NPM mahasiswa yang akan diupdate: ");
-    if (npm.empty()) {
-        cout << "NPM tidak boleh kosong." << endl;
-        return;
-    }
-    if (!isValidNPM(npm)) {
-        cout << "NPM harus 8 digit angka." << endl;
-        return;
-    }
-
-    Node* current = head;
-    while (current != nullptr) {
-        if (current->npm == npm) {
-            string nama = readLine("Masukkan nama baru: ");
-            if (nama.empty()) {
-                cout << "Nama tidak boleh kosong." << endl;
-                return;
-            }
-            string jurusan = readLine("Masukkan jurusan baru: ");
-            if (jurusan.empty()) {
-                cout << "Jurusan tidak boleh kosong." << endl;
-                return;
-            }
-            string ipkString = readLine("Masukkan IPK baru (0.0 - 4.0): ");
-            if (ipkString.empty()) {
-                cout << "IPK tidak boleh kosong." << endl;
-                return;
-            }
-            try {
-                double ipk = stod(ipkString);
-                if (!isValidIPK(ipk)) {
-                    cout << "IPK harus antara 0.0 sampai 4.0." << endl;
-                    return;
-                }
-                current->nama = nama;
-                current->jurusan = jurusan;
-                current->ipk = ipk;
-                cout << "Data mahasiswa berhasil diperbarui." << endl;
-            } catch (const invalid_argument&) {
-                cout << "IPK harus berupa angka." << endl;
-            } catch (const out_of_range&) {
-                cout << "IPK tidak valid." << endl;
-            }
-            return;
+        Node* curr = head;
+        cout << "\nDAFTAR MAHASISWA" << endl;
+        while (curr != nullptr) {
+            cout << "[" << curr->id << "] " << curr->npm << " - " << curr->nama 
+                 << " (" << curr->jurusan << ") IPK: " << curr->ipk << endl;
+            curr = curr->next;
         }
-        current = current->next;
-    }
-    cout << "Mahasiswa dengan NPM tersebut tidak ditemukan." << endl;
-}
-
-void LinkedList::deleteByNPM() {
-    string npm = readLine("Masukkan NPM mahasiswa yang akan dihapus: ");
-    if (npm.empty()) {
-        cout << "NPM tidak boleh kosong." << endl;
-        return;
-    }
-    if (!isValidNPM(npm)) {
-        cout << "NPM harus 8 digit angka." << endl;
-        return;
     }
 
-    Node* current = head;
-    Node* previous = nullptr;
-    while (current != nullptr) {
-        if (current->npm == npm) {
-            if (previous == nullptr) {
-                head = current->next;
-            } else {
-                previous->next = current->next;
+    void searchByNPM() {
+        string target;
+        cout << "Cari NPM: ";
+        cin >> target;
+
+        Node* curr = head;
+        while (curr != nullptr) {
+            if (curr->npm == target) {
+                cout << "Data Ditemukan: " << curr->nama << " | " << curr->jurusan << " | IPK: " << curr->ipk << endl;
+                return;
             }
-            delete current;
-            cout << "Data mahasiswa berhasil dihapus." << endl;
-            return;
+            curr = curr->next;
         }
-        previous = current;
-        current = current->next;
+        cout << "Mahasiswa dengan NPM " << target << " tidak ditemukan." << endl;
     }
-    cout << "Mahasiswa dengan NPM tersebut tidak ditemukan." << endl;
-}
 
-void LinkedList::clearAll() {
-    Node* current = head;
-    while (current != nullptr) {
-        Node* temp = current;
-        current = current->next;
-        delete temp;
+    void updateByNPM() {
+        string target;
+        cout << "NPM yang akan diupdate: ";
+        cin >> target;
+
+        Node* curr = head;
+        while (curr != nullptr) {
+            if (curr->npm == target) {
+                cout << "Nama Baru: "; getline(cin >> ws, curr->nama);
+                cout << "Jurusan Baru: "; getline(cin >> ws, curr->jurusan);
+                cout << "IPK Baru: "; cin >> curr->ipk;
+                cout << "Update berhasil." << endl;
+                return;
+            }
+            curr = curr->next;
+        }
+        cout << "NPM tidak ditemukan." << endl;
     }
-    head = nullptr;
-    cout << "Semua data mahasiswa telah dihapus." << endl;
-}
+
+    void deleteByNPM() {
+        string target;
+        cout << "NPM yang akan dihapus: ";
+        cin >> target;
+
+        Node *curr = head, *prev = nullptr;
+        while (curr != nullptr) {
+            if (curr->npm == target) {
+                if (prev == nullptr) head = curr->next;
+                else prev->next = curr->next;
+                if (curr == tail) tail = prev;
+                delete curr;
+                cout << "Data berhasil dihapus." << endl;
+                return;
+            }
+            prev = curr;
+            curr = curr->next;
+        }
+        cout << "NPM tidak ditemukan." << endl;
+    }
+
+    void clearAll() {
+        while (head != nullptr) {
+            Node* temp = head;
+            head = head->next;
+            delete temp;
+        }
+        tail = nullptr;
+        cout << "Semua data dibersihkan." << endl;
+    }
+};
 
 int main() {
-    LinkedList list;
-    int pilihan = 0;
+    MahasiswaList list;
+    int pilihan;
 
-    while (true) {
+    do {
         cout << "\n====== MENU DATA MAHASISWA ======" << endl;
-        cout << "1. Tambah Mahasiswa" << endl;
-        cout << "2. Tampilkan Semua Mahasiswa" << endl;
-        cout << "3. Cari mahasiswa (berdasarkan NPM)" << endl;
-        cout << "4. Update Data Mahasiswa" << endl;
-        cout << "5. Hapus Mahasiswa (berdasarkan NPM)" << endl;
-        cout << "6. Hapus Semua Data" << endl;
-        cout << "7. Keluar" << endl;
-        cout << "Pilih: ";
-
+        cout << "1. Tambah Mahasiswa\n2. Tampilkan Semua Mahasiswa\n3. Cari (NPM)\n";
+        cout << "4. Update Data\n5. Hapus (NPM)\n6. Hapus Semua Data\n7. Keluar\nPilih: ";
+        
         if (!(cin >> pilihan)) {
-            cout << "Input tidak valid. Silakan masukkan angka 1-7." << endl;
             cin.clear();
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
             continue;
         }
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
         switch (pilihan) {
-            case 1:
-                list.addMahasiswa();
-                break;
-            case 2:
-                list.displayAll();
-                break;
-            case 3:
-                list.searchByNPM();
-                break;
-            case 4:
-                list.updateByNPM();
-                break;
-            case 5:
-                list.deleteByNPM();
-                break;
-            case 6:
-                list.clearAll();
-                break;
-            case 7:
-                cout << "Keluar dari program." << endl;
-                return 0;
-            default:
-                cout << "Pilihan tidak valid. Silakan pilih 1-7." << endl;
-                break;
+            case 1: list.addMahasiswa(); break;
+            case 2: list.displayAll(); break;
+            case 3: list.searchByNPM(); break;
+            case 4: list.updateByNPM(); break;
+            case 5: list.deleteByNPM(); break;
+            case 6: list.clearAll(); break;
         }
-    }
+    } while (pilihan != 7);
 
     return 0;
 }
-
