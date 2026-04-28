@@ -237,7 +237,7 @@ void lihatAntrian() {
         return;
     }
 
-    // Header tabel
+    
     cout << BRIGHT_WHITE << BOLD;
     cout << "  " << left
         << setw(5)  << "No"
